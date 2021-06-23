@@ -31,7 +31,8 @@ app.get('/qa/:questionId/answers', (req, res) => {
   const db = client.connect(function (err) {
     assert.equal(null, err);
     const db = client.db(dbName);
-    db.collection('answers').find({ 'product_id': 8 }).toArray(function (err, result) {
+    const id = Number(req.params.questionId);
+    db.collection('answers').find({ 'question_id': id }).toArray(function (err, result) {
       if (err) {
         res.send(err)
       }
