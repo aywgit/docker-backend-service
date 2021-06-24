@@ -1,7 +1,12 @@
 const express = require('express');
 const path = require('path');
+const bodyParser = require('body-parser');
+
 const app = express();
 const PORT = 3000;
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 const MongoClient = require('mongodb').MongoClient;
 const assert = require('assert');
@@ -44,12 +49,28 @@ app.get('/qa/:questionId/answers', (req, res) => {
 
 //askQuestion
 app.post('/qa/:id', (req, res) => {
+  console.log(req.body)
   let body = req.body.body;
   let name = req.body.name;
   let email = req.body.email;
+  let id = req.params.id;
+  let time = Date.now();
 
-  //add to questions
-  //set data, reported, helpful
+  let obj = { product_id: id, body: body, date_written: time, asker_name: name, asker_email: email, report: 0, helpful: 0 }
+
+  const client = new MongoClient(url);
+  const db = client.connect(function (err) {
+    assert.equal(null, err);
+    const db = client.db(dbName);
+    db.collection('questions').insertOne(obj, function (err, result) {
+      if (err) {
+        res.send(err)
+      }
+      console.log(obj)
+      res.send('inserted into questions collection')
+      client.close();
+    });
+  });
 })
 
 //answerQuestion
