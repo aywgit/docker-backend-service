@@ -99,7 +99,19 @@ app.post('/qa/:questionId/answers', (req, res) => {
 
 //markQAsHelpful
 app.put('/qa/question/:questionId/helpful', (req, res) => {
-  //increment helpful key in questions
+  const client = new MongoClient(url);
+  const db = client.connect(function (err) {
+    assert.equal(null, err);
+    const db = client.db(dbName);
+    const questionId = Number(req.params.questionId);
+    db.collection('questions').update({ id: questionId }, { $inc: { helpful: 1 } }, function (err, result) {
+      if (err) {
+        res.send(err)
+      }
+      res.send('success')
+      client.close();
+    });
+  });
 })
 
 //reportQuestion
@@ -109,7 +121,19 @@ app.put('/qa/question/:questionId/report', (req, res) => {
 
 //markAnsAsHelpful
 app.put('/qa/answer/:answerId/helpful', (req, res) => {
-  //increment helpful in answers
+  const client = new MongoClient(url);
+  const db = client.connect(function (err) {
+    assert.equal(null, err);
+    const db = client.db(dbName);
+    const answerId = Number(req.params.answerId);
+    db.collection('answerscombines').update({ id: answerId }, { $inc: { helpful: 1 } }, function (err, result) {
+      if (err) {
+        res.send(err)
+      }
+      res.send('success')
+      client.close();
+    });
+  });
 })
 
 //reportAns
