@@ -3,7 +3,7 @@ const path = require('path');
 const bodyParser = require('body-parser');
 
 const app = express();
-const PORT = 3000;
+const PORT = 3030;
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -36,12 +36,13 @@ app.get('/qa/:questionId/answers', (req, res) => {
   const db = client.connect(function (err) {
     assert.equal(null, err);
     const db = client.db(dbName);
+
     const id = Number(req.params.questionId);
-    db.collection('answers').find({ 'question_id': id }).toArray(function (err, result) {
+    db.collection('answerscombines').find({ 'question_id': id }).toArray(function (err, result) {
       if (err) {
         res.send(err)
       }
-      res.send(result)
+      res.send(result);
       client.close();
     });
   });
@@ -49,7 +50,6 @@ app.get('/qa/:questionId/answers', (req, res) => {
 
 //askQuestion
 app.post('/qa/:id', (req, res) => {
-  console.log(req.body)
   let body = req.body.body;
   let name = req.body.name;
   let email = req.body.email;
@@ -66,7 +66,6 @@ app.post('/qa/:id', (req, res) => {
       if (err) {
         res.send(err)
       }
-      console.log(obj)
       res.send('inserted into questions collection')
       client.close();
     });
@@ -79,10 +78,23 @@ app.post('/qa/:questionId/answers', (req, res) => {
   let name = req.body.name;
   let email = req.body.email;
   let photos = req.body.photos;
+  let id = req.params.questionId;
+  let time = Date.now();
 
-  //add to answers
-  //set question_id, date, helpfulness
-  //add to answer_photos
+  let answerObj = { question_id: id, body: body, date_written: time, answerer_name: name, answerer_email: email, report: 0, helpful: 0, photos: photos }
+
+  const client = new MongoClient(url);
+  const db = client.connect(function (err) {
+    assert.equal(null, err);
+    const db = client.db(dbName);
+    db.collection('answerscombines').insertOne(answerObj, function (err, result) {
+      if (err) {
+        res.send(err)
+      }
+      res.send('inserted into answers collection')
+      client.close();
+    })
+  })
 })
 
 //markQAsHelpful
