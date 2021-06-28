@@ -116,7 +116,19 @@ app.put('/qa/question/:questionId/helpful', (req, res) => {
 
 //reportQuestion
 app.put('/qa/question/:questionId/report', (req, res) => {
-  //change report boolean in questions
+  const client = new MongoClient(url);
+  const db = client.connect(function (err) {
+    assert.equal(null, err);
+    const db = client.db(dbName);
+    const questionId = Number(req.params.questionId);
+    db.collection('questions').update({ id: questionId }, { $set: { reported: 1 } }, function (err, result) {
+      if (err) {
+        res.send(err)
+      }
+      res.send('success')
+      client.close();
+    });
+  });
 })
 
 //markAnsAsHelpful
@@ -138,7 +150,19 @@ app.put('/qa/answer/:answerId/helpful', (req, res) => {
 
 //reportAns
 app.put('/qa/answer/:answerId/report', (req, res) => {
-  //change report boolean in answers
+  const client = new MongoClient(url);
+  const db = client.connect(function (err) {
+    assert.equal(null, err);
+    const db = client.db(dbName);
+    const answerId = Number(req.params.answerId);
+    db.collection('answerscombines').update({ id: answerId }, { $set: { reported: 1 } }, function (err, result) {
+      if (err) {
+        res.send(err)
+      }
+      res.send('success')
+      client.close();
+    });
+  });
 })
 
 module.exports = app;
