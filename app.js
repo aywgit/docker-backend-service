@@ -11,9 +11,16 @@ app.use(bodyParser.urlencoded({ extended: true }));
 const MongoClient = require('mongodb').MongoClient;
 let ObjectId = require('mongodb').ObjectId;
 const assert = require('assert');
-const url = 'mongodb://localhost:27017';
+const url = 'mongodb://mongodb:27017';
 const dbName = 'questionAnswers';
 
+app.get('', (req, res) => {
+  res.send('connected to api!')
+})
+
+app.get('/qa', (req, res) => {
+  res.send('got to /qa route!')
+})
 //getQA
 app.get('/qa/:id', (req, res) => {
   const client = new MongoClient(url);
