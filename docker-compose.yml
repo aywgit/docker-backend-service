@@ -4,8 +4,8 @@ services:
     build: .
     ports:
       - "3030:3030"
-    links:
-      - mongodb
+    # links:
+    #   - mongodb
     depends_on:
       - mongodb
     # environment:
@@ -21,4 +21,7 @@ services:
 
 volumes:
   mongodata:
+    # if you want to connect to existing database instead of create new one?
+    # external: true
   mongoconfig:
+    # external: true
