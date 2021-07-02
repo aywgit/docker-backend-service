@@ -58,12 +58,13 @@ app.get('/qa/:questionId/answers', (req, res) => {
 
 //askQuestion
 app.post('/qa/:id', (req, res) => {
+  console.log(req)
   let body = req.body.body;
   let name = req.body.name;
   let email = req.body.email;
   let time = Date.now();
 
-  let product_id = req.params.id;
+  let product_id = Number(req.params.id);
   let obj = { product_id: product_id, question_body: body, question_date: time, asker_name: name, asker_email: email, report: 0, question_helpfulness: 0 }
 
   const client = new MongoClient(url);
@@ -82,6 +83,7 @@ app.post('/qa/:id', (req, res) => {
 
 //answerQuestion
 app.post('/qa/:questionId/answers', (req, res) => {
+  console.log(req.body)
   let body = req.body.body;
   let name = req.body.name;
   let email = req.body.email;
@@ -148,7 +150,7 @@ app.put('/qa/answer/:answerId/helpful', (req, res) => {
     const db = client.db(dbName);
 
     const answer_id = req.params.answerId;
-    db.collection('answerscombined').update({ _id: new ObjectId(answer_id) }, { $inc: { question_helpfulness: 1 } }, function (err, result) {
+    db.collection('answerscombined').update({ _id: new ObjectId(answer_id) }, { $inc: { helpfulness: 1 } }, function (err, result) {
       if (err) {
         res.send(err)
       }
