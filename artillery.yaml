@@ -1,0 +1,19 @@
+config:
+  target: 'http://127.0.0.1:3030'
+  phases:
+    - duration: 30
+      arrivalRate: 5
+      name: Warm up
+    - duration: 120
+      arrivalRate: 5
+      rampTo: 50
+      name: Ramp up load
+    - duration: 300
+      arrivalRate: 100
+      name: Sustained load
+
+scenarios:
+  - name: 'get questions using productId'
+    flow:
+      - get:
+          url: '/qa/1'

@@ -1,10 +1,12 @@
 const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser');
+var cors = require('cors')
 
 const app = express();
 const PORT = 3030;
 
+app.use(cors())
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -18,9 +20,6 @@ app.get('', (req, res) => {
   res.send('connected to api!')
 })
 
-app.get('/qa', (req, res) => {
-  res.send('got to /qa route!')
-})
 //getQA
 app.get('/qa/:id', (req, res) => {
   const client = new MongoClient(url);
@@ -114,7 +113,7 @@ app.put('/qa/question/:questionId/helpful', (req, res) => {
     const db = client.db(dbName);
 
     const question_id = req.params.questionId;
-    db.collection('questions').update({ _id: new ObjectId(question_id) }, { $inc: { helpful: 1 } }, function (err, result) {
+    db.collection('questions').update({ _id: new ObjectId(question_id) }, { $inc: { question_helpfulness: 1 } }, function (err, result) {
       if (err) {
         res.send(err)
       }
@@ -149,7 +148,7 @@ app.put('/qa/answer/:answerId/helpful', (req, res) => {
     const db = client.db(dbName);
 
     const answer_id = req.params.answerId;
-    db.collection('answerscombined').update({ _id: new ObjectId(answer_id) }, { $inc: { helpful: 1 } }, function (err, result) {
+    db.collection('answerscombined').update({ _id: new ObjectId(answer_id) }, { $inc: { question_helpfulness: 1 } }, function (err, result) {
       if (err) {
         res.send(err)
       }
