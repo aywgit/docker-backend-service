@@ -2,6 +2,7 @@ const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser');
 var cors = require('cors')
+const StatsD = require("node-statsd"), statsDClient = new StatsD();
 
 const app = express();
 const PORT = 3030;
