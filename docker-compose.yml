@@ -2,7 +2,7 @@ version: '3.7'
 services:
   web:
     # build: .
-    image: aywdocker/questionsanswers_web2
+    image: aywdocker/questionsanswers_web3
     ports:
       - "3030:3030"
     # links:
