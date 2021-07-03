@@ -14,7 +14,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 const MongoClient = require('mongodb').MongoClient;
 let ObjectId = require('mongodb').ObjectId;
 const assert = require('assert');
-const url = 'mongodb://mongodb:27017';
+const url = 'mongodb://localhost:27017';
 const dbName = 'questionAnswers';
 
 app.get('', (req, res) => {
