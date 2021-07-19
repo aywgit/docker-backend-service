@@ -14,7 +14,6 @@ services:
       APP_SERVER_PORT: 3030
   frontend:
     image: aywdocker/questionsanswers_frontend
-    # build: /Users/angelawu/Documents/Hack Reactor/SDC/legacy-fec-codebase/frontend-capstone
     ports:
       - "3000:3000"
     depends_on:
@@ -22,13 +21,9 @@ services:
       - web
   mongodb:
     image: aywdocker/mongo
-    # image: mongo:latest
     ports:
-      - 27017:27017
+      - "27017:27017"
     volumes:
-      #
-      #
-      # maybe map to local path of volume instead
       - mongodata:/data/db
       - mongoconfig:/data/configdb
 
