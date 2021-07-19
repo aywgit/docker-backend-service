@@ -1,3 +1,17 @@
+// const express = require("express")
+// const mongoose = require("mongoose") // new
+
+// // Connect to MongoDB database
+// mongoose
+//   .connect("mongodb://ec2-34-204-200-42.compute-1.amazonaws.com:27017/questionAnswers", { useNewUrlParser: true })
+//   .then(() => {
+//     const app = express()
+
+//     app.listen(5000, () => {
+//       console.log("Server has started!")
+//     })
+//   })
+
 const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser');
@@ -14,7 +28,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 const MongoClient = require('mongodb').MongoClient;
 let ObjectId = require('mongodb').ObjectId;
 const assert = require('assert');
-const url = 'http://ec2-34-204-200-42.compute-1.amazonaws.com:27017';
+const url = 'mongodb://3.238.229.6:27017';
 const dbName = 'questionAnswers';
 
 app.get('', (req, res) => {
